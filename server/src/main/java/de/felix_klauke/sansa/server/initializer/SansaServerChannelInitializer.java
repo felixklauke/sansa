@@ -1,12 +1,14 @@
 package de.felix_klauke.sansa.server.initializer;
 
+import de.felix_klauke.sansa.commons.ftp.FTPResponse;
+import de.felix_klauke.sansa.commons.ftp.FTPResponseEncoder;
+import de.felix_klauke.sansa.commons.ftp.FTPStatus;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -21,13 +23,12 @@ public class SansaServerChannelInitializer extends ChannelInitializer<SocketChan
 
         pipeline.addLast(new LoggingHandler(LogLevel.TRACE));
         pipeline.addLast(new StringDecoder());
-        pipeline.addLast(new StringEncoder());
+        pipeline.addLast(new FTPResponseEncoder());
         pipeline.addLast(new SimpleChannelInboundHandler<String>() {
             @Override
             public void channelActive(ChannelHandlerContext ctx) throws Exception {
-                System.out.println("Active channel!");
-
-                ctx.channel().writeAndFlush("234 ok\n");
+                FTPResponse response = new FTPResponse(FTPStatus.READY, "Sansa will take over from here");
+                ctx.channel().writeAndFlush(response);
             }
 
             @Override

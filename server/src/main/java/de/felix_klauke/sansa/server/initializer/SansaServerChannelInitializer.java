@@ -1,14 +1,11 @@
 package de.felix_klauke.sansa.server.initializer;
 
-import de.felix_klauke.sansa.commons.ftp.FTPResponse;
+import de.felix_klauke.sansa.commons.ftp.FTPRequestDecoder;
 import de.felix_klauke.sansa.commons.ftp.FTPResponseEncoder;
-import de.felix_klauke.sansa.commons.ftp.FTPStatus;
-import io.netty.channel.ChannelHandlerContext;
+import de.felix_klauke.sansa.server.connection.SansaConnection;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -22,9 +19,11 @@ public class SansaServerChannelInitializer extends ChannelInitializer<SocketChan
         ChannelPipeline pipeline = socketChannel.pipeline();
 
         pipeline.addLast(new LoggingHandler(LogLevel.TRACE));
-        pipeline.addLast(new StringDecoder());
+        pipeline.addLast(new FTPRequestDecoder());
         pipeline.addLast(new FTPResponseEncoder());
-        pipeline.addLast(new SimpleChannelInboundHandler<String>() {
+        pipeline.addLast(new SansaConnection(socketChannel));
+
+        /*pipeline.addLast(new SimpleChannelInboundHandler<String>() {
             @Override
             public void channelActive(ChannelHandlerContext ctx) throws Exception {
                 FTPResponse response = new FTPResponse(FTPStatus.READY, "Sansa will take over from here");
@@ -43,6 +42,6 @@ public class SansaServerChannelInitializer extends ChannelInitializer<SocketChan
                     channelHandlerContext.channel().writeAndFlush("230 logged in\n");
                 }
             }
-        });
+        });*/
     }
 }

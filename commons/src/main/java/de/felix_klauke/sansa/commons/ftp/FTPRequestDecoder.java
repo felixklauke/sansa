@@ -12,6 +12,17 @@ import java.util.List;
 public class FTPRequestDecoder extends ByteToMessageDecoder {
 
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
-        System.out.println(byteBuf.toString());
+        byte[] readableBytes = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(readableBytes);
+        String content = new String(readableBytes);
+
+        FTPCommand command = FTPCommand.getCommandViaContent(content);
+
+        int commandOffset = command.getCommand().length() + 1;
+        int argsSize = content.length() - 2;
+        String[] args = content.substring(commandOffset, argsSize).split(" ");
+
+        FTPRequest request = new FTPRequest(command, args);
+        list.add(request);
     }
 }

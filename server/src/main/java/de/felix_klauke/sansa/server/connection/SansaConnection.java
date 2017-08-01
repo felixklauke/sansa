@@ -1,5 +1,6 @@
 package de.felix_klauke.sansa.server.connection;
 
+import de.felix_klauke.sansa.commons.ftp.FTPCommand;
 import de.felix_klauke.sansa.commons.ftp.FTPRequest;
 import de.felix_klauke.sansa.commons.ftp.FTPResponse;
 import de.felix_klauke.sansa.commons.ftp.FTPStatus;
@@ -25,9 +26,16 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
     }
 
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FTPRequest ftpRequest) throws Exception {
-        System.out.println(ftpRequest.toString());
+        FTPCommand command = ftpRequest.getCommand();
 
+        switch (command) {
+            case USER: {
+                String userName = ftpRequest.getArgs()[0];
+                
 
+                break;
+            }
+        }
     }
 
     public void sendResponse(FTPResponse response) {

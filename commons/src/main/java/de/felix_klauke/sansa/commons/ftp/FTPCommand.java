@@ -8,7 +8,8 @@ import de.felix_klauke.sansa.commons.exception.NoSuchCommandException;
 public enum FTPCommand {
 
     OPTS("OPTS"),
-    USER("USER");
+    USER("USER"),
+    PASS("PASS");
 
     private final String command;
 

@@ -2,11 +2,11 @@ package de.felix_klauke.sansa.server;
 
 import de.felix_klauke.sansa.commons.utils.NettyUtils;
 import de.felix_klauke.sansa.server.initializer.SansaServerChannelInitializer;
+import de.felix_klauke.sansa.server.user.IUserManager;
+import de.felix_klauke.sansa.server.user.SimpleUser;
+import de.felix_klauke.sansa.server.user.SimpleUserManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -15,6 +15,11 @@ public class SimpleSansaServer implements SansaServer {
 
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
+    private IUserManager userManager;
+
+    public SimpleSansaServer() {
+        this.userManager = new SimpleUserManager();
+    }
 
     @Override
     public void start() {
@@ -22,7 +27,7 @@ public class SimpleSansaServer implements SansaServer {
         this.workerGroup = NettyUtils.createEventLoopGroup(4);
 
         Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
-        ChannelHandler channelInitializer = new SansaServerChannelInitializer();
+        ChannelHandler channelInitializer = new SansaServerChannelInitializer(userManager);
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
 
@@ -38,5 +43,10 @@ public class SimpleSansaServer implements SansaServer {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void registerUsers() {
+        this.userManager.registerUser(new SimpleUser("felix", "test"));
     }
 }

@@ -5,4 +5,6 @@ package de.felix_klauke.sansa.server;
  */
 public interface SansaServer {
     void start();
+
+    void registerUsers();
 }

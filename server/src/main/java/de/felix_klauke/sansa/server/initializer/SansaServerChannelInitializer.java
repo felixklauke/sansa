@@ -3,6 +3,7 @@ package de.felix_klauke.sansa.server.initializer;
 import de.felix_klauke.sansa.commons.ftp.FTPRequestDecoder;
 import de.felix_klauke.sansa.commons.ftp.FTPResponseEncoder;
 import de.felix_klauke.sansa.server.connection.SansaConnection;
+import de.felix_klauke.sansa.server.user.IUserManager;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -14,6 +15,12 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class SansaServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
+    private final IUserManager userManager;
+
+    public SansaServerChannelInitializer(IUserManager userManager) {
+        this.userManager = userManager;
+    }
+
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
@@ -21,7 +28,7 @@ public class SansaServerChannelInitializer extends ChannelInitializer<SocketChan
         pipeline.addLast(new LoggingHandler(LogLevel.TRACE));
         pipeline.addLast(new FTPRequestDecoder());
         pipeline.addLast(new FTPResponseEncoder());
-        pipeline.addLast(new SansaConnection(socketChannel));
+        pipeline.addLast(new SansaConnection(this.userManager, socketChannel));
 
         /*pipeline.addLast(new SimpleChannelInboundHandler<String>() {
             @Override

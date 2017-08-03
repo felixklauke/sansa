@@ -34,4 +34,26 @@ public class SimpleUserManager implements IUserManager {
     public void registerUser(IUser user) {
         this.currentUsers.add(user);
     }
+
+    @Override
+    public IUser authenticateUser(String userName) {
+        for (IUser currentUser : this.currentUsers) {
+            if (Objects.equals(currentUser.getUserName(), userName) && !currentUser.needsAuthentication()) {
+                return currentUser;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean userNeedsAuthentication(String userName) {
+        for (IUser currentUser : this.currentUsers) {
+            if (Objects.equals(currentUser.getUserName(), userName)) {
+                return currentUser.needsAuthentication();
+            }
+        }
+
+        return true;
+    }
 }

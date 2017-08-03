@@ -43,8 +43,17 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                 if (this.userManager.userExists(userName)) {
                     this.lastAttemptedUserName = userName;
 
-                    FTPResponse response = new FTPResponse(FTPStatus.PASSWORD_NEEDED, "My dear " + userName + " will need a password.");
-                    sendResponse(response);
+                    if (this.userManager.userNeedsAuthentication(userName)) {
+                        FTPResponse response = new FTPResponse(FTPStatus.PASSWORD_NEEDED, "My dear " + userName + " will need a password.");
+                        sendResponse(response);
+                        return;
+                    }
+
+                    this.currentUser = this.userManager.authenticateUser(userName);
+                    if (currentUser != null) {
+                        FTPResponse response = new FTPResponse(FTPStatus.LOGGED_IN, "Welcome to my world.");
+                        sendResponse(response);
+                    }
                 }
 
                 break;

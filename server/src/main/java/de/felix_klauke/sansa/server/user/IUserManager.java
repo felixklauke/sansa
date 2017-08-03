@@ -25,4 +25,20 @@ public interface IUserManager {
      * @param user The user.
      */
     void registerUser(IUser user);
+
+    /**
+     * Authenticate a user that doesn't need authentication.
+     *
+     * @param userName The user name.
+     * @return The user or null.
+     */
+    IUser authenticateUser(String userName);
+
+    /**
+     * Check if a user with the given name exists and needs authentication.
+     *
+     * @param userName The user name.
+     * @return If the user needs authentication.
+     */
+    boolean userNeedsAuthentication(String userName);
 }

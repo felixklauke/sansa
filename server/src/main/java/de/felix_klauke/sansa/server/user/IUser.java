@@ -10,6 +10,13 @@ public interface IUser {
     String getUserName();
 
     /**
+     * Check if a user needs authentication or not.
+     *
+     * @return The auth state.
+     */
+    boolean needsAuthentication();
+
+    /**
      * Check if the user can be authenticated with the given secret.
      *
      * @param password The secret.

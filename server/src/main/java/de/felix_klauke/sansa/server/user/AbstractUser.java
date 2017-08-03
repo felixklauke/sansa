@@ -3,13 +3,24 @@ package de.felix_klauke.sansa.server.user;
 public abstract class AbstractUser implements IUser {
 
     private final String userName;
+    private final boolean needsAuthentication;
+
+    protected AbstractUser(String userName, boolean needsAuthentication) {
+        this.userName = userName;
+        this.needsAuthentication = needsAuthentication;
+    }
 
     protected AbstractUser(String userName) {
-        this.userName = userName;
+        this(userName, true);
     }
 
     @Override
     public String getUserName() {
         return userName;
+    }
+
+    @Override
+    public boolean needsAuthentication() {
+        return needsAuthentication;
     }
 }

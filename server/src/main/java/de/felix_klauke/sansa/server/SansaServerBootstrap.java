@@ -7,7 +7,7 @@ package de.felix_klauke.sansa.server;
 public class SansaServerBootstrap {
 
     public static void main(String[] args) {
-        SansaServer sansaServer = new SimpleSansaServer(userManager);
+        SansaServer sansaServer = new SimpleSansaServer();
         sansaServer.start();
 
         sansaServer.registerUsers();

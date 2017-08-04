@@ -16,25 +16,34 @@ import org.slf4j.LoggerFactory;
  */
 public class SimpleSansaServer implements SansaServer {
 
+    /**
+     * Basic logger for general server actions.
+     */
     private final Logger logger;
 
     /**
      * Boss group for netty.
      */
     private EventLoopGroup bossGroup;
+
     /**
      * User manager for ftp with anuthentication.
      */
     private final IUserManager userManager;
+
     /**
      * Worker Group for netty
      */
     private EventLoopGroup workerGroup;
+
     /**
      * Channel all clients will speak with.
      */
     private Channel channel;
 
+    /**
+     * Basic constructor to create a server.
+     */
     SimpleSansaServer() {
         this.logger = LoggerFactory.getLogger(SimpleSansaServer.class);
         this.userManager = new SimpleUserManager();
@@ -50,6 +59,8 @@ public class SimpleSansaServer implements SansaServer {
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
 
+        this.logger.info("Starting a sansa server.");
+
         try {
             channel = serverBootstrap
                     .group(this.bossGroup, this.workerGroup)
@@ -57,11 +68,11 @@ public class SimpleSansaServer implements SansaServer {
                     .childHandler(channelInitializer)
                     .option(ChannelOption.TCP_NODELAY, true)
                     .bind(21).sync().channel();
-
-            System.out.println("Started.");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        this.logger.info("Sansa is now rocking the shit.");
     }
 
     @Override

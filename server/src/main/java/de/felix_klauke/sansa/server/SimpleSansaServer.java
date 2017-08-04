@@ -13,11 +13,15 @@ import io.netty.channel.*;
  */
 public class SimpleSansaServer implements SansaServer {
 
+    /**
+     * Boss group for netty.
+     */
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
+    private Channel channel;
     private IUserManager userManager;
 
-    public SimpleSansaServer() {
+    SimpleSansaServer() {
         this.userManager = new SimpleUserManager();
     }
 
@@ -32,7 +36,7 @@ public class SimpleSansaServer implements SansaServer {
         ServerBootstrap serverBootstrap = new ServerBootstrap();
 
         try {
-            Channel channel = serverBootstrap
+            channel = serverBootstrap
                     .group(this.bossGroup, this.workerGroup)
                     .channel(serverChannelClazz)
                     .childHandler(channelInitializer)
@@ -43,6 +47,14 @@ public class SimpleSansaServer implements SansaServer {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stop() {
+        this.channel.close();
+
+        this.bossGroup.shutdownGracefully();
+        this.workerGroup.shutdownGracefully();
     }
 
     @Override

@@ -23,6 +23,7 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
     private String lastAttemptedUserName;
     private IUser currentUser;
     private boolean usesBinary = true;
+    private boolean passiveMode = false;
     private File currentLocation;
 
     public SansaConnection(IUserManager userManager, Channel channel) {
@@ -99,6 +100,14 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                 this.usesBinary = true;
 
                 FTPResponse response = new FTPResponse(FTPStatus.OK, "Yoo!");
+                sendResponse(response);
+
+                break;
+            }
+            case EPSV: {
+                this.passiveMode = true;
+
+                FTPResponse response = new FTPResponse(FTPStatus.ENTERED_PASSIVE_MODE, "Sansa is now submissive.");
                 sendResponse(response);
 
                 break;

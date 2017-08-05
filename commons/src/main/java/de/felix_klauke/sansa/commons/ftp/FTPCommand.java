@@ -14,7 +14,8 @@ public enum FTPCommand {
     UNKNOWN_COMMAND("UnknownCommand"),
     PWD("PWD"),
     TYPE("TYPE"),
-    CHANGE_WORKING_DIR("CWD");
+    CHANGE_WORKING_DIR("CWD"),
+    EPSV("EPSV");
 
     private final String command;
 

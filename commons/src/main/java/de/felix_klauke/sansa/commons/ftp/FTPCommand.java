@@ -9,7 +9,9 @@ public enum FTPCommand {
 
     OPTS("OPTS"),
     USER("USER"),
-    PASS("PASS");
+    PASS("PASS"),
+    BYE("BYE"),
+    QUIT("QUIT");
 
     private final String command;
 

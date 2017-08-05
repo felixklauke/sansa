@@ -12,7 +12,8 @@ public enum FTPCommand {
     SYST("SYST"),
     QUIT("QUIT"),
     UNKNOWN_COMMAND("ThisWillNeverHappen"),
-    PWD("PWD");
+    PWD("PWD"),
+    CHANGE_WORKING_DIR("CWD");
 
     private final String command;
 

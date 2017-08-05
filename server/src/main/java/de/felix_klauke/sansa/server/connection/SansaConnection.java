@@ -79,13 +79,21 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                 break;
             }
             case PWD: {
-
                 FTPResponse response = new FTPResponse(FTPStatus.PATH_CREATED, this.currentLocation.getAbsolutePath());
                 sendResponse(response);
 
                 break;
             }
+            case CHANGE_WORKING_DIR: {
+                validateArgsLength(ftpRequest, 1);
+                String path = ftpRequest.getArgs()[0];
 
+                this.currentLocation = new File(path);
+
+                FTPResponse response = new FTPResponse(FTPStatus.WORKING_DIR_CHANGED, "Sansa is going there.");
+                sendResponse(response);
+                break;
+            }
             case BYE: {
 
             }

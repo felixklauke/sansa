@@ -22,6 +22,7 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
     private final Channel channel;
     private String lastAttemptedUserName;
     private IUser currentUser;
+    private boolean usesBinary = true;
     private File currentLocation;
 
     public SansaConnection(IUserManager userManager, Channel channel) {
@@ -92,6 +93,14 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
                 FTPResponse response = new FTPResponse(FTPStatus.WORKING_DIR_CHANGED, "Sansa is going there.");
                 sendResponse(response);
+                break;
+            }
+            case TYPE: {
+                this.usesBinary = true;
+
+                FTPResponse response = new FTPResponse(FTPStatus.OK, "Yoo!");
+                sendResponse(response);
+
                 break;
             }
             case BYE: {

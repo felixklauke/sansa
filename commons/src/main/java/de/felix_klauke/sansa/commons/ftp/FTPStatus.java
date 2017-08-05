@@ -5,6 +5,7 @@ package de.felix_klauke.sansa.commons.ftp;
  */
 public enum FTPStatus {
 
+    OK(200),
     SYST_STATUS(215),
     READY(220),
     LOGGED_IN(230),

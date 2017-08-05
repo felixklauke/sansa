@@ -13,6 +13,7 @@ public enum FTPCommand {
     QUIT("QUIT"),
     UNKNOWN_COMMAND("UnknownCommand"),
     PWD("PWD"),
+    TYPE("TYPE"),
     CHANGE_WORKING_DIR("CWD");
 
     private final String command;

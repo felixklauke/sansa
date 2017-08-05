@@ -138,6 +138,11 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                 printWriter.print("Gaylord.mp3");
                 printWriter.flush();
 
+                socket.close();
+
+                FTPResponse response1 = new FTPResponse(FTPStatus.FILE_STATUS, "yo");
+                sendResponse(response1);
+
                 break;
             }
             case BYE: {

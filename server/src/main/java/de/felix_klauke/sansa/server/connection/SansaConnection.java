@@ -11,6 +11,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.io.File;
+
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
@@ -20,10 +22,12 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
     private final Channel channel;
     private String lastAttemptedUserName;
     private IUser currentUser;
+    private File currentLocation;
 
     public SansaConnection(IUserManager userManager, Channel channel) {
         this.userManager = userManager;
         this.channel = channel;
+        this.currentLocation = new File("");
     }
 
     @Override
@@ -67,6 +71,15 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                     FTPResponse response = new FTPResponse(FTPStatus.LOGGED_IN, "Welcome to my world.");
                     sendResponse(response);
                 }
+
+                break;
+            }
+            case BYE: {
+
+            }
+            case QUIT: {
+
+                this.channel.close();
 
                 break;
             }

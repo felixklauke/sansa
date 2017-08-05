@@ -9,7 +9,8 @@ public enum FTPStatus {
     READY(220),
     LOGGED_IN(230),
     PASSWORD_NEEDED(331),
-    LOGIN_INCORRECT(530);
+    LOGIN_INCORRECT(530),
+    UNKNOWN_COMMAND(500);
 
     private final int statusId;
 

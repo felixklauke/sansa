@@ -1,7 +1,5 @@
 package de.felix_klauke.sansa.commons.ftp;
 
-import de.felix_klauke.sansa.commons.exception.NoSuchCommandException;
-
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
@@ -12,7 +10,8 @@ public enum FTPCommand {
     PASS("PASS"),
     BYE("BYE"),
     SYST("SYST"),
-    QUIT("QUIT");
+    QUIT("QUIT"),
+    UNKNOWN_COMMAND("ThisWillNeverHappen");
 
     private final String command;
 
@@ -27,7 +26,7 @@ public enum FTPCommand {
             }
         }
 
-        throw new NoSuchCommandException("Could not find a command in content: " + content);
+        return UNKNOWN_COMMAND;
     }
 
     public String getCommand() {

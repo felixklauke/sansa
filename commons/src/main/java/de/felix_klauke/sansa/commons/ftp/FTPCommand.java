@@ -16,8 +16,8 @@ public enum FTPCommand {
     TYPE("TYPE"),
     CHANGE_WORKING_DIR("CWD"),
     EPSV("EPSV"),
-    EPRT("EPRT");
-    //LIST("LIST");
+    EPRT("EPRT"),
+    LIST("LIST");
 
     private final String command;
 

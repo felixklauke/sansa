@@ -12,6 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -129,7 +130,7 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
                 break;
             }
-            /*case LIST: {
+            case LIST: {
                 FTPResponse response = new FTPResponse(FTPStatus.BEGINNING_FILE_LIST_ASCII, "Here it comes.");
                 sendResponse(response);
 
@@ -138,7 +139,7 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                 printWriter.flush();
 
                 break;
-            }*/
+            }
             case BYE: {
 
             }

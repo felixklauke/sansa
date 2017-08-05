@@ -13,8 +13,8 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.file.Files;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -121,8 +121,7 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
                 String[] splittedArgs = ftpRequest.getArgs()[0].split("\\|");
                 int port = Integer.parseInt(splittedArgs[splittedArgs.length - 1]);
-
-                InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.remoteAddress();
+                
                 socket = new Socket("localhost", port);
 
                 FTPResponse response = new FTPResponse(FTPStatus.FILE_STATUS, "yo");
@@ -135,10 +134,26 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                 sendResponse(response);
 
                 PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-                printWriter.print("Gaylord.mp3");
+                printWriter.print("pom.xml");
                 printWriter.flush();
 
                 socket.close();
+
+                FTPResponse response1 = new FTPResponse(FTPStatus.FILE_STATUS, "yo");
+                sendResponse(response1);
+
+                break;
+            }
+            case RETRIEVE: {
+                validateArgsLength(ftpRequest, 1);
+
+                String fileName = ftpRequest.getArgs()[0];
+
+                File file = new File(this.currentLocation, fileName);
+                byte[] bytes = Files.readAllBytes(file.toPath());
+
+                this.socket.getOutputStream().write(bytes);
+                this.socket.getOutputStream().flush();
 
                 FTPResponse response1 = new FTPResponse(FTPStatus.FILE_STATUS, "yo");
                 sendResponse(response1);

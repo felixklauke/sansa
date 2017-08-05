@@ -11,7 +11,7 @@ public enum FTPCommand {
     BYE("BYE"),
     SYST("SYST"),
     QUIT("QUIT"),
-    UNKNOWN_COMMAND("ThisWillNeverHappen"),
+    UNKNOWN_COMMAND("UnknownCommand"),
     PWD("PWD"),
     CHANGE_WORKING_DIR("CWD");
 

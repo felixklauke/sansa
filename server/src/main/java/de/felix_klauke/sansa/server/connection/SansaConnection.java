@@ -78,6 +78,14 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
                 break;
             }
+            case PWD: {
+
+                FTPResponse response = new FTPResponse(FTPStatus.PATH_CREATED, this.currentLocation.getAbsolutePath());
+                sendResponse(response);
+
+                break;
+            }
+
             case BYE: {
 
             }
@@ -93,7 +101,6 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
                 break;
             }
-
             default: {
                 FTPResponse response = new FTPResponse(FTPStatus.UNKNOWN_COMMAND, "Sansa never heard about thatt.");
                 sendResponse(response);

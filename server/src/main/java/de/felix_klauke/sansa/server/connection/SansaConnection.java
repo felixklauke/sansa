@@ -12,12 +12,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.io.File;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
+    private Socket socket;
     private final IUserManager userManager;
     private final Channel channel;
     private String lastAttemptedUserName;
@@ -112,6 +115,30 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
                 break;
             }
+            case EPRT: {
+                validateArgsLength(ftpRequest, 1);
+
+                String[] splittedArgs = ftpRequest.getArgs()[0].split("\\|");
+                int port = Integer.parseInt(splittedArgs[splittedArgs.length - 1]);
+
+                InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.remoteAddress();
+                socket = new Socket("localhost", port);
+
+                FTPResponse response = new FTPResponse(FTPStatus.FILE_STATUS, "yo");
+                sendResponse(response);
+
+                break;
+            }
+            /*case LIST: {
+                FTPResponse response = new FTPResponse(FTPStatus.BEGINNING_FILE_LIST_ASCII, "Here it comes.");
+                sendResponse(response);
+
+                PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
+                printWriter.print("Gaylord.mp3");
+                printWriter.flush();
+
+                break;
+            }*/
             case BYE: {
 
             }

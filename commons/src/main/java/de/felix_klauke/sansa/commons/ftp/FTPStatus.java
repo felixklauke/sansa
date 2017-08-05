@@ -5,9 +5,11 @@ package de.felix_klauke.sansa.commons.ftp;
  */
 public enum FTPStatus {
 
+    BEGINNING_FILE_LIST_ASCII(150),
     OK(200),
     SYST_STATUS(215),
     READY(220),
+    FILE_STATUS(226),
     ENTERED_PASSIVE_MODE(227),
     LOGGED_IN(230),
     WORKING_DIR_CHANGED(250),

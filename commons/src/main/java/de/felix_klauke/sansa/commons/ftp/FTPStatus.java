@@ -5,9 +5,11 @@ package de.felix_klauke.sansa.commons.ftp;
  */
 public enum FTPStatus {
 
+    SYST_STATUS(215),
     READY(220),
     LOGGED_IN(230),
-    PASSWORD_NEEDED(331);
+    PASSWORD_NEEDED(331),
+    LOGIN_INCORRECT(530);
 
     private final int statusId;
 

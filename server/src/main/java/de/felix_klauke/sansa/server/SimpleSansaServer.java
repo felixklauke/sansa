@@ -67,7 +67,7 @@ public class SimpleSansaServer implements SansaServer {
                     .channel(serverChannelClazz)
                     .childHandler(channelInitializer)
                     .option(ChannelOption.TCP_NODELAY, true)
-                    .bind(21).sync().channel();
+                    .bind(1100).sync().channel();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

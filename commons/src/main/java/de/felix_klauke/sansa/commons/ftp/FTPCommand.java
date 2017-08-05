@@ -11,6 +11,7 @@ public enum FTPCommand {
     USER("USER"),
     PASS("PASS"),
     BYE("BYE"),
+    SYST("SYST"),
     QUIT("QUIT");
 
     private final String command;
@@ -26,7 +27,7 @@ public enum FTPCommand {
             }
         }
 
-        throw new NoSuchCommandException("Could not find a command in content " + content);
+        throw new NoSuchCommandException("Could not find a command in content: " + content);
     }
 
     public String getCommand() {

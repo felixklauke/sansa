@@ -70,7 +70,11 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
                 if (this.currentUser != null) {
                     FTPResponse response = new FTPResponse(FTPStatus.LOGGED_IN, "Welcome to my world.");
                     sendResponse(response);
+                    return;
                 }
+
+                FTPResponse response = new FTPResponse(FTPStatus.LOGIN_INCORRECT, "Sansa cannot accept that.");
+                sendResponse(response);
 
                 break;
             }
@@ -80,6 +84,12 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
             case QUIT: {
 
                 this.channel.close();
+
+                break;
+            }
+            case SYST: {
+                FTPResponse response = new FTPResponse(FTPStatus.SYST_STATUS, "Moarfuckn Sansa");
+                this.sendResponse(response);
 
                 break;
             }

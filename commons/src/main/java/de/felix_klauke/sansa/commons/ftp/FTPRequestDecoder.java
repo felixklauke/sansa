@@ -20,7 +20,12 @@ public class FTPRequestDecoder extends ByteToMessageDecoder {
 
         int commandOffset = command.getCommand().length() + 1;
         int argsSize = content.length() - 2;
-        String[] args = content.substring(commandOffset, argsSize).split(" ");
+
+        String[] args = new String[0];
+
+        if (argsSize > commandOffset) {
+            args = content.substring(commandOffset, argsSize).split(" ");
+        }
 
         FTPRequest request = new FTPRequest(command, args);
         list.add(request);

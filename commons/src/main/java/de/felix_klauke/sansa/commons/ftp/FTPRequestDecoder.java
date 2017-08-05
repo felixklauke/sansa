@@ -3,6 +3,8 @@ package de.felix_klauke.sansa.commons.ftp;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -10,6 +12,8 @@ import java.util.List;
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class FTPRequestDecoder extends ByteToMessageDecoder {
+
+    private Logger logger = LoggerFactory.getLogger(FTPRequestDecoder.class);
 
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         byte[] readableBytes = new byte[byteBuf.readableBytes()];
@@ -28,6 +32,9 @@ public class FTPRequestDecoder extends ByteToMessageDecoder {
         }
 
         FTPRequest request = new FTPRequest(command, args);
+
+        logger.info("Handling request: " + request);
+
         list.add(request);
     }
 }

@@ -10,7 +10,7 @@ public class FTPRequest {
     private final FTPCommand command;
     private final String[] args;
 
-    public FTPRequest(FTPCommand command, String[] args) {
+    FTPRequest(FTPCommand command, String[] args) {
         this.command = command;
         this.args = args;
     }
@@ -21,6 +21,10 @@ public class FTPRequest {
 
     public String[] getArgs() {
         return args;
+    }
+
+    public String getArgument(int index) {
+        return getArgs()[index];
     }
 
     @Override

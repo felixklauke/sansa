@@ -3,7 +3,7 @@ package de.felix_klauke.sansa.commons.ftp;
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
-public enum FTPCommand {
+public enum FTPCommand implements ICommand {
 
     OPTS("OPTS"),
     USER("USER"),

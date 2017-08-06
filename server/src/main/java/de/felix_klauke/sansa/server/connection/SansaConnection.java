@@ -17,19 +17,76 @@ import java.net.Socket;
 import java.nio.file.Files;
 
 /**
+ * An inbound handler always representing one command connection (Not the
+ * data connection!) to one FTP client. It will handler all incoming data
+ * that could be decoded as an {@link FTPRequest} by an
+ * {@link de.felix_klauke.sansa.commons.ftp.FTPRequestDecoder}.
+ *
+ * Remember that the data connection to a client isn't known yet until
+ * the client sends us his information in passive mode. The data connection
+ * will be built by a {@link de.felix_klauke.sansa.server.handler.CommandHandlerPorts}.
+ *
+ * TODO: Build a layer of authentication checks.
+ *
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
-    private Socket socket;
+    /**
+     * The user manager used to authenticate user with or without authentication. It
+     * holds all users registered by
+     * {@link de.felix_klauke.sansa.server.SansaServer#registerUser(IUser)}
+     */
     private final IUserManager userManager;
+    /**
+     * The netty channel for the command connection to the client.
+     */
     private final Channel channel;
+    /**
+     * The socket to the client also known as "FTP data connection". All information
+     * about files etc. will be sent through this socket to client in passive mode.
+     * <p>
+     * TODO: Insert a list of handlers that destroy the data connection.
+     * <p>
+     * It will be created in a {@link de.felix_klauke.sansa.server.handler.CommandHandlerPorts}
+     * and destroyed in ...
+     */
+    private Socket socket;
+    /**
+     * The last user name a client wanted to authenticate with.
+     */
     private String lastAttemptedUserName;
+
+    /**
+     * The current login or client is authenticated with. Will be null
+     * when the user isn't authenticated at the moment.
+     */
     private IUser currentUser;
+
+    /**
+     * Currently unused but it should indicate if the clients wants to talk
+     * via ASCII or binary mode.
+     */
     private boolean usesBinary = true;
+
+    /**
+     * Currently unused but it should indicate the mode the data is sent with.
+     */
     private boolean passiveMode = false;
+
+    /**
+     * The current directory the user is working in. Will be changed by
+     * all requests with the command {@link FTPCommand#CHANGE_WORKING_DIR}
+     * like in {@link de.felix_klauke.sansa.server.handler.CommandHandlerChangeWorkingDir}
+     */
     private File currentLocation;
 
+    /**
+     * Create a new connection.
+     *
+     * @param userManager The usermanager.
+     * @param channel The command control channel to the client.
+     */
     public SansaConnection(IUserManager userManager, Channel channel) {
         this.userManager = userManager;
         this.channel = channel;
@@ -121,7 +178,7 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
                 String[] splittedArgs = ftpRequest.getArgs()[0].split("\\|");
                 int port = Integer.parseInt(splittedArgs[splittedArgs.length - 1]);
-                
+
                 socket = new Socket("localhost", port);
 
                 FTPResponse response = new FTPResponse(FTPStatus.FILE_STATUS, "yo");
@@ -188,7 +245,60 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
         }
     }
 
+    /**
+     * Send an FTP Response to the client.
+     *
+     * @param response The response to send.
+     */
     public void sendResponse(FTPResponse response) {
         channel.writeAndFlush(response);
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public File getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(File currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    public IUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(IUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public IUserManager getUserManager() {
+        return userManager;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public String getLastAttemptedUserName() {
+        return lastAttemptedUserName;
+    }
+
+    public void setLastAttemptedUserName(String lastAttemptedUserName) {
+        this.lastAttemptedUserName = lastAttemptedUserName;
+    }
+
+    public void setPassiveMode(boolean passiveMode) {
+        this.passiveMode = passiveMode;
+    }
+
+    public void setUsesBinary(boolean usesBinary) {
+        this.usesBinary = usesBinary;
     }
 }

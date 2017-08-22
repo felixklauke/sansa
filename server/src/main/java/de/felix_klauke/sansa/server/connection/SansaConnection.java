@@ -5,6 +5,8 @@ import de.felix_klauke.sansa.commons.ftp.FTPCommand;
 import de.felix_klauke.sansa.commons.ftp.FTPRequest;
 import de.felix_klauke.sansa.commons.ftp.FTPResponse;
 import de.felix_klauke.sansa.commons.ftp.FTPStatus;
+import de.felix_klauke.sansa.server.handler.CommandHandlerUser;
+import de.felix_klauke.sansa.server.handler.ICommandHandler;
 import de.felix_klauke.sansa.server.user.IUser;
 import de.felix_klauke.sansa.server.user.IUserManager;
 import io.netty.channel.Channel;
@@ -15,6 +17,8 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An inbound handler always representing one command connection (Not the
@@ -38,10 +42,12 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
      * {@link de.felix_klauke.sansa.server.SansaServer#registerUser(IUser)}
      */
     private final IUserManager userManager;
+
     /**
      * The netty channel for the command connection to the client.
      */
     private final Channel channel;
+
     /**
      * The socket to the client also known as "FTP data connection". All information
      * about files etc. will be sent through this socket to client in passive mode.
@@ -52,6 +58,7 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
      * and destroyed in ...
      */
     private Socket socket;
+
     /**
      * The last user name a client wanted to authenticate with.
      */
@@ -81,6 +88,8 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
      */
     private File currentLocation;
 
+    private final Map<FTPCommand, ICommandHandler> commandHandlers;
+
     /**
      * Create a new connection.
      *
@@ -91,6 +100,9 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
         this.userManager = userManager;
         this.channel = channel;
         this.currentLocation = new File("");
+
+        commandHandlers = new HashMap<>();
+        commandHandlers.put(FTPCommand.USER, new CommandHandlerUser(this, userManager));
     }
 
     @Override
@@ -101,6 +113,12 @@ public class SansaConnection extends SimpleChannelInboundHandler<FTPRequest> {
 
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FTPRequest ftpRequest) throws Exception {
         FTPCommand command = ftpRequest.getCommand();
+
+        ICommandHandler commandHandler = commandHandlers.get(command);
+        if (commandHandler != null) {
+            commandHandler.handleRequest(ftpRequest);
+            return;
+        }
 
         switch (command) {
             case USER: {

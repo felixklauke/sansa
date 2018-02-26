@@ -30,7 +30,7 @@
     </appender>
 
     <appender class="ch.qos.logback.core.FileAppender" name="FILE">
-        <file>skylla-server.log</file>
+        <file>sansa-server.log</file>
         <append>true</append>
         <immediateFlush>true</immediateFlush>
         <encoder>

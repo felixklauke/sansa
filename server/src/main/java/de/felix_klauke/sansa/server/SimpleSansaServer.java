@@ -1,15 +1,18 @@
 package de.felix_klauke.sansa.server;
 
+import de.felix_klauke.sansa.commons.ftp.FTPRequest;
+import de.felix_klauke.sansa.commons.ftp.FTPRequestContext;
 import de.felix_klauke.sansa.commons.utils.NettyUtils;
 import de.felix_klauke.sansa.server.initializer.SansaServerChannelInitializer;
 import de.felix_klauke.sansa.server.user.IUser;
 import de.felix_klauke.sansa.server.user.IUserManager;
 import de.felix_klauke.sansa.server.user.SimpleUser;
-import de.felix_klauke.sansa.server.user.SimpleUserManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -19,7 +22,7 @@ public class SimpleSansaServer implements SansaServer {
     /**
      * Basic logger for general server actions.
      */
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(SimpleSansaServer.class);
 
     /**
      * Boss group for netty.
@@ -27,7 +30,7 @@ public class SimpleSansaServer implements SansaServer {
     private EventLoopGroup bossGroup;
 
     /**
-     * User manager for ftp with anuthentication.
+     * User manager for ftp with authentication.
      */
     private final IUserManager userManager;
 
@@ -44,9 +47,9 @@ public class SimpleSansaServer implements SansaServer {
     /**
      * Basic constructor to create a server.
      */
-    SimpleSansaServer() {
-        this.logger = LoggerFactory.getLogger(SimpleSansaServer.class);
-        this.userManager = new SimpleUserManager();
+    @Inject
+    SimpleSansaServer(IUserManager userManager) {
+        this.userManager = userManager;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class SimpleSansaServer implements SansaServer {
         this.workerGroup = NettyUtils.createEventLoopGroup(4);
 
         Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
-        ChannelHandler channelInitializer = new SansaServerChannelInitializer(userManager);
+        ChannelHandler channelInitializer = new SansaServerChannelInitializer(this, userManager);
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
 
@@ -85,16 +88,21 @@ public class SimpleSansaServer implements SansaServer {
 
     @Override
     public boolean isRunning() {
-        return this.channel.isActive();
+        return channel != null && channel.isActive();
     }
 
     @Override
     public void registerUser(IUser user) {
-        this.userManager.registerUser(user);
+        userManager.registerUser(user);
     }
 
     @Override
     public void registerUsers() {
-        this.userManager.registerUser(new SimpleUser("felix", "test"));
+        userManager.registerUser(new SimpleUser("felix", "test"));
+    }
+
+    @Override
+    public void handleRequest(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+
     }
 }

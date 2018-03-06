@@ -5,12 +5,12 @@ public abstract class AbstractUser implements IUser {
     private final String userName;
     private final boolean needsAuthentication;
 
-    protected AbstractUser(String userName, boolean needsAuthentication) {
+    private AbstractUser(String userName, boolean needsAuthentication) {
         this.userName = userName;
         this.needsAuthentication = needsAuthentication;
     }
 
-    protected AbstractUser(String userName) {
+    AbstractUser(String userName) {
         this(userName, true);
     }
 

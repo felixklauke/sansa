@@ -19,6 +19,7 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 import javax.inject.Inject;
 import javax.net.ssl.SSLException;
+import java.io.File;
 import java.security.cert.CertificateException;
 
 /**
@@ -32,6 +33,7 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     private String password;
     private IUser user;
     private ChannelHandlerContext lastChannelHandlerContext;
+    private File workingPath;
 
     @Inject
     public SansaServerConnection(SansaServer sansaServer, IUserManager userManager) {
@@ -86,5 +88,10 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     public boolean isAuthenticated() {
         user = userManager.authenticateUser(userName, password);
         return user != null;
+    }
+
+    @Override
+    public File getUserWorkingPath() {
+        return workingPath;
     }
 }

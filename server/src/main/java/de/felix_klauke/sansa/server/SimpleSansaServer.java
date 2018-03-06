@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.io.File;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -120,8 +121,44 @@ public class SimpleSansaServer implements SansaServer {
             }
             case SYST: {
                 handleCommandSystemInformation(requestContext, ftpRequest);
+                break;
+            }
+            case PWD: {
+                handleCommandPrintWorkingDir(requestContext, ftpRequest);
+                break;
+            }
+
+            default: {
+
+            }
+            case UNKNOWN_COMMAND: {
+                handleUnknownCommand(requestContext, ftpRequest);
+                break;
             }
         }
+    }
+
+    /**
+     * Handle that printing of the current working dir was requested.
+     *
+     * @param requestContext The request context.
+     * @param ftpRequest     The request.
+     */
+    private void handleCommandPrintWorkingDir(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        File file = requestContext.getCurrentUserWorkingPath();
+        FTPResponse response = new FTPResponse(FTPStatus.PATH_CREATED, file == null ? "/" : file.getAbsolutePath());
+        requestContext.resume(response);
+    }
+
+    /**
+     * Handle that sansa never heard about that command.
+     *
+     * @param requestContext The request context.
+     * @param ftpRequest     The request.
+     */
+    private void handleUnknownCommand(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        FTPResponse response = new FTPResponse(FTPStatus.UNKNOWN_COMMAND, "Sansa never heard about that.");
+        requestContext.resume(response);
     }
 
     /**

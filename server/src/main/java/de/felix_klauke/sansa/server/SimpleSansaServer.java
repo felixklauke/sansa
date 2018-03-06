@@ -118,11 +118,25 @@ public class SimpleSansaServer implements SansaServer {
                 handleCommandPassword(requestContext, ftpRequest);
                 break;
             }
+            case SYST: {
+                handleCommandSystemInformation(requestContext, ftpRequest);
+            }
         }
     }
 
     /**
-     * Handle that the given request wants to set a password for authetication.
+     * Handle that the given request was about system information.
+     *
+     * @param requestContext The request context.
+     * @param ftpRequest The request.
+     */
+    private void handleCommandSystemInformation(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        FTPResponse response = new FTPResponse(FTPStatus.SYST_STATUS, "Motherfuckr this is sansa stark from winterfell.");
+        requestContext.resume(response);
+    }
+
+    /**
+     * Handle that the given request wants to set a password for authentication.
      *
      * @param requestContext The request context.
      * @param ftpRequest     The request.

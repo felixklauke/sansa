@@ -20,4 +20,8 @@ public class FTPRequest {
     public String getRawCommand() {
         return rawCommand;
     }
+
+    public String getCommandArgument(int index) {
+        return rawCommand.split(" ")[index + 1];
+    }
 }

@@ -40,7 +40,7 @@ public enum FTPCommand implements ICommand {
 
     public static FTPCommand forCommand(String command) {
         for (FTPCommand ftpCommand : values()) {
-            if (ftpCommand.getCommand().equalsIgnoreCase(command)) {
+            if (command.startsWith(ftpCommand.command)) {
                 return ftpCommand;
             }
         }

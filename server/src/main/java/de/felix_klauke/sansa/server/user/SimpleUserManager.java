@@ -1,59 +1,39 @@
 package de.felix_klauke.sansa.server.user;
 
-import java.util.HashSet;
+import com.google.common.collect.Sets;
+
 import java.util.Objects;
 import java.util.Set;
 
 public class SimpleUserManager implements IUserManager {
 
-    private final Set<IUser> currentUsers;
-
-    public SimpleUserManager() {
-        this.currentUsers = new HashSet<>();
-    }
+    /**
+     * All currently registered users.
+     */
+    private final Set<IUser> currentUsers = Sets.newConcurrentHashSet();
 
     @Override
     public IUser authenticateUser(String userName, String password) {
-        for (IUser currentUser : this.currentUsers) {
-            if (!(Objects.equals(currentUser.getUserName(), userName))) {
-                continue;
-            }
-
-            return currentUser.checkPassword(password) ? currentUser : null;
-        }
-
-        return null;
+        return currentUsers.stream().filter(currentUser -> Objects.equals(currentUser.getUserName(), userName)).findFirst().filter(currentUser -> currentUser.checkPassword(password)).orElse(null);
     }
 
     @Override
     public boolean userExists(String userName) {
-        return this.currentUsers.stream().map(IUser::getUserName).anyMatch(name -> Objects.equals(name, userName));
+        return currentUsers.stream().map(IUser::getUserName).anyMatch(name -> Objects.equals(name, userName));
     }
 
     @Override
     public void registerUser(IUser user) {
-        this.currentUsers.add(user);
+        currentUsers.add(user);
     }
 
     @Override
     public IUser authenticateUser(String userName) {
-        for (IUser currentUser : this.currentUsers) {
-            if (Objects.equals(currentUser.getUserName(), userName) && !currentUser.needsAuthentication()) {
-                return currentUser;
-            }
-        }
-
-        return null;
+        return currentUsers.stream().filter(currentUser -> Objects.equals(currentUser.getUserName(), userName) && !currentUser.needsAuthentication()).findFirst().orElse(null);
     }
 
     @Override
     public boolean userNeedsAuthentication(String userName) {
-        for (IUser currentUser : this.currentUsers) {
-            if (Objects.equals(currentUser.getUserName(), userName)) {
-                return currentUser.needsAuthentication();
-            }
-        }
-
-        return true;
+        return currentUsers.stream().filter(currentUser -> Objects.equals(currentUser.getUserName(), userName)).findFirst().map(IUser::needsAuthentication).orElse(true);
     }
 }

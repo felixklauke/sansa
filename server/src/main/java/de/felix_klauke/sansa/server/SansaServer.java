@@ -1,5 +1,7 @@
 package de.felix_klauke.sansa.server;
 
+import de.felix_klauke.sansa.commons.ftp.FTPRequest;
+import de.felix_klauke.sansa.commons.ftp.FTPRequestContext;
 import de.felix_klauke.sansa.server.user.IUser;
 
 /**
@@ -35,4 +37,6 @@ public interface SansaServer {
      * Register the default user
      */
     void registerUsers();
+
+    void handleRequest(FTPRequestContext requestContext, FTPRequest ftpRequest);
 }

@@ -2,6 +2,8 @@ package de.felix_klauke.sansa.server.connection;
 
 import de.felix_klauke.sansa.commons.ftp.FTPRequest;
 import de.felix_klauke.sansa.commons.ftp.FTPRequestContext;
+import de.felix_klauke.sansa.commons.ftp.FTPResponse;
+import de.felix_klauke.sansa.commons.ftp.FTPStatus;
 import de.felix_klauke.sansa.server.SansaServer;
 import de.felix_klauke.sansa.server.user.IUserManager;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,6 +23,12 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     public SansaServerConnection(SansaServer sansaServer, IUserManager userManager) {
         this.sansaServer = sansaServer;
         this.userManager = userManager;
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        FTPResponse response = new FTPResponse(FTPStatus.READY, "This is the sansa take over.");
+        ctx.writeAndFlush(response);
     }
 
     @Override

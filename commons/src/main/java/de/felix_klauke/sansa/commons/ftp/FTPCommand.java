@@ -5,6 +5,7 @@ package de.felix_klauke.sansa.commons.ftp;
  */
 public enum FTPCommand implements ICommand {
 
+    AUTH_TLS("AUTH TLS"),
     OPTS("OPTS"),
     USER("USER"),
     PASS("PASS"),
@@ -26,16 +27,6 @@ public enum FTPCommand implements ICommand {
         this.command = command;
     }
 
-    public static FTPCommand getCommandViaContent(String content) {
-        for (FTPCommand command : FTPCommand.values()) {
-            if (content.startsWith(command.getCommand())) {
-                return command;
-            }
-        }
-
-        return UNKNOWN_COMMAND;
-    }
-
     public String getCommand() {
         return command;
     }
@@ -45,5 +36,15 @@ public enum FTPCommand implements ICommand {
         return "FTPCommand{" +
                 "command='" + command + '\'' +
                 '}';
+    }
+
+    public static FTPCommand forCommand(String command) {
+        for (FTPCommand ftpCommand : values()) {
+            if (command.startsWith(ftpCommand.command)) {
+                return ftpCommand;
+            }
+        }
+
+        return UNKNOWN_COMMAND;
     }
 }

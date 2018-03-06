@@ -1,5 +1,7 @@
 package de.felix_klauke.sansa.server.user;
 
+
+// TODO: SO MUCH IMPROVEMENTS NEEDED!
 public interface IUserManager {
 
     /**

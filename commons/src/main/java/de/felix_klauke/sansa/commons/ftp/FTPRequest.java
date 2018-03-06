@@ -1,37 +1,27 @@
 package de.felix_klauke.sansa.commons.ftp;
 
-import java.util.Arrays;
-
 /**
  * @author Felix 'SasukeKawaii' Klauke
  */
 public class FTPRequest {
 
+    private final String rawCommand;
     private final FTPCommand command;
-    private final String[] args;
 
-    FTPRequest(FTPCommand command, String[] args) {
+    public FTPRequest(String rawCommand, FTPCommand command) {
+        this.rawCommand = rawCommand;
         this.command = command;
-        this.args = args;
     }
 
     public FTPCommand getCommand() {
         return command;
     }
 
-    public String[] getArgs() {
-        return args;
+    public String getRawCommand() {
+        return rawCommand;
     }
 
-    public String getArgument(int index) {
-        return getArgs()[index];
-    }
-
-    @Override
-    public String toString() {
-        return "FTPRequest{" +
-                "command=" + command +
-                ", args=" + Arrays.toString(args) +
-                '}';
+    public String getCommandArgument(int index) {
+        return rawCommand.split(" ")[index + 1];
     }
 }

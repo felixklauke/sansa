@@ -16,4 +16,7 @@ public class FTPRequestContext {
     public void resume(FTPResponse response) {
         channelHandlerContext.channel().writeAndFlush(response);
     }
+
+    public void setupSSL(String rawCommand) {
+    }
 }

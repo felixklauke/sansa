@@ -15,26 +15,23 @@ public class FTPRequestDecoder extends ByteToMessageDecoder {
 
     private Logger logger = LoggerFactory.getLogger(FTPRequestDecoder.class);
 
-    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
-        byte[] readableBytes = new byte[byteBuf.readableBytes()];
-        byteBuf.readBytes(readableBytes);
-        String content = new String(readableBytes);
+    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) {
+        int readableBytes = byteBuf.readableBytes();
+        byte[] bytes = new byte[readableBytes];
+        byteBuf.readBytes(bytes);
 
-        FTPCommand command = FTPCommand.getCommandViaContent(content);
+        String command = new String(bytes);
 
-        int commandOffset = command.getCommand().length() + 1;
-        int argsSize = content.length() - 2;
-
-        String[] args = new String[0];
-
-        if (argsSize > commandOffset) {
-            args = content.substring(commandOffset, argsSize).split(" ");
+        // Cut off suffix
+        if (command.endsWith("\r\n")) {
+            command = command.substring(0, command.length() - 2);
         }
 
-        FTPRequest request = new FTPRequest(command, args);
+        FTPCommand ftpCommand = FTPCommand.forCommand(command);
+        FTPRequest ftpRequest = new FTPRequest(command, ftpCommand);
 
-        logger.info("Handling request: " + request);
+        logger.info("Handling plain command: " + command);
 
-        list.add(request);
+        list.add(ftpRequest);
     }
 }

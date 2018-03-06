@@ -3,6 +3,8 @@ package de.felix_klauke.sansa.commons.ftp;
 import de.felix_klauke.sansa.commons.connection.FTPServerConnection;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.io.File;
+
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
@@ -34,5 +36,9 @@ public class FTPRequestContext {
 
     public void setLastAttemptedPassword(String lastAttemptedPassword) {
         serverConnection.setPassword(lastAttemptedPassword);
+    }
+
+    public File getCurrentUserWorkingPath() {
+        return serverConnection.getUserWorkingPath();
     }
 }

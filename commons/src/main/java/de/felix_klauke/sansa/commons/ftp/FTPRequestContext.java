@@ -35,4 +35,8 @@ public class FTPRequestContext {
     public void setLastAttemptedPassword(String lastAttemptedPassword) {
         serverConnection.setPassword(lastAttemptedPassword);
     }
+
+    public void setTransferType(FTPTransferType transferType) {
+        this.serverConnection.setTransferType(transferType);
+    }
 }

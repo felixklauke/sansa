@@ -1,10 +1,7 @@
 package de.felix_klauke.sansa.server.connection;
 
 import de.felix_klauke.sansa.commons.connection.FTPServerConnection;
-import de.felix_klauke.sansa.commons.ftp.FTPRequest;
-import de.felix_klauke.sansa.commons.ftp.FTPRequestContext;
-import de.felix_klauke.sansa.commons.ftp.FTPResponse;
-import de.felix_klauke.sansa.commons.ftp.FTPStatus;
+import de.felix_klauke.sansa.commons.ftp.*;
 import de.felix_klauke.sansa.server.SansaServer;
 import de.felix_klauke.sansa.server.user.IUser;
 import de.felix_klauke.sansa.server.user.IUserManager;
@@ -32,6 +29,7 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     private String password;
     private IUser user;
     private ChannelHandlerContext lastChannelHandlerContext;
+    private FTPTransferType transferType;
 
     @Inject
     public SansaServerConnection(SansaServer sansaServer, IUserManager userManager) {
@@ -58,7 +56,7 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     @Override
     public void setupSSL() {
         try {
-            SelfSignedCertificate selfSignedCertificate = new SelfSignedCertificate();
+            SelfSignedCertificate selfSignedCertificate = new SelfSignedCertificate("localhost");
 
             SslContext sslContext = SslContextBuilder.forServer(selfSignedCertificate.certificate(), selfSignedCertificate.privateKey()).build();
             ByteBufAllocator byteBufAllocator = lastChannelHandlerContext.alloc();
@@ -86,5 +84,10 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     public boolean isAuthenticated() {
         user = userManager.authenticateUser(userName, password);
         return user != null;
+    }
+
+    @Override
+    public void setTransferType(FTPTransferType transferType) {
+        this.transferType = transferType;
     }
 }

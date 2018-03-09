@@ -1,5 +1,7 @@
 package de.felix_klauke.sansa.commons.connection;
 
+import de.felix_klauke.sansa.commons.ftp.FTPTransferType;
+
 /**
  * @author Felix Klauke <info@felix-klauke.de>
  */
@@ -12,4 +14,6 @@ public interface FTPServerConnection {
     void setPassword(String password);
 
     boolean isAuthenticated();
+
+    void setTransferType(FTPTransferType transferType);
 }

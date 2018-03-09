@@ -45,4 +45,8 @@ public class FTPRequestContext {
     public File getCurrentUserWorkingPath() {
         return serverConnection.getUserWorkingPath();
     }
+
+    public void setPassiveMode() {
+        serverConnection.setActiveMode(true);
+    }
 }

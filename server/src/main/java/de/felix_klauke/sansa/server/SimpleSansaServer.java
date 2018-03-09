@@ -128,6 +128,10 @@ public class SimpleSansaServer implements SansaServer {
                 handleCommandPrintWorkingDir(requestContext, ftpRequest);
                 break;
             }
+            case EPSV: {
+                handleCommandEnterPassiveMode(requestContext, ftpRequest);
+                break;
+            }
             default: {
 
             }
@@ -136,6 +140,19 @@ public class SimpleSansaServer implements SansaServer {
                 break;
             }
         }
+    }
+
+    /**
+     * Handle that the client wants us to enter the passive mode.
+     *
+     * @param requestContext The request context.
+     * @param ftpRequest     The request.
+     */
+    private void handleCommandEnterPassiveMode(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        requestContext.setPassiveMode();
+
+        FTPResponse response = new FTPResponse(FTPStatus.ENTERED_PASSIVE_MODE, "Sansa is now submissive and passive.");
+        requestContext.resume(response);
     }
 
     /**

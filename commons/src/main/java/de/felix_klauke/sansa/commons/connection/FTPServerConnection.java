@@ -1,5 +1,6 @@
 package de.felix_klauke.sansa.commons.connection;
 
+import de.felix_klauke.sansa.commons.ftp.FTPTransferType;
 import java.io.File;
 
 /**
@@ -14,6 +15,8 @@ public interface FTPServerConnection {
     void setPassword(String password);
 
     boolean isAuthenticated();
+
+    void setTransferType(FTPTransferType transferType);
 
     File getUserWorkingPath();
 }

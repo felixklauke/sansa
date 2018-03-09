@@ -38,6 +38,10 @@ public class FTPRequestContext {
         serverConnection.setPassword(lastAttemptedPassword);
     }
 
+    public void setTransferType(FTPTransferType transferType) {
+        this.serverConnection.setTransferType(transferType);
+    }
+  
     public File getCurrentUserWorkingPath() {
         return serverConnection.getUserWorkingPath();
     }

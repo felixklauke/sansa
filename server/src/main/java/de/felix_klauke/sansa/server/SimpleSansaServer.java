@@ -1,9 +1,6 @@
 package de.felix_klauke.sansa.server;
 
-import de.felix_klauke.sansa.commons.ftp.FTPRequest;
-import de.felix_klauke.sansa.commons.ftp.FTPRequestContext;
-import de.felix_klauke.sansa.commons.ftp.FTPResponse;
-import de.felix_klauke.sansa.commons.ftp.FTPStatus;
+import de.felix_klauke.sansa.commons.ftp.*;
 import de.felix_klauke.sansa.commons.utils.NettyUtils;
 import de.felix_klauke.sansa.server.initializer.SansaServerChannelInitializer;
 import de.felix_klauke.sansa.server.user.IUser;
@@ -119,6 +116,10 @@ public class SimpleSansaServer implements SansaServer {
                 handleCommandPassword(requestContext, ftpRequest);
                 break;
             }
+            case TYPE: {
+                handleCommandSetTransferType(requestContext, ftpRequest);
+                break;
+            }
             case SYST: {
                 handleCommandSystemInformation(requestContext, ftpRequest);
                 break;
@@ -127,7 +128,6 @@ public class SimpleSansaServer implements SansaServer {
                 handleCommandPrintWorkingDir(requestContext, ftpRequest);
                 break;
             }
-
             default: {
 
             }
@@ -139,11 +139,21 @@ public class SimpleSansaServer implements SansaServer {
     }
 
     /**
-     * Handle that printing of the current working dir was requested.
+     * Handle that the given request wants to set the transfer type.
      *
      * @param requestContext The request context.
      * @param ftpRequest     The request.
      */
+    private void handleCommandSetTransferType(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        String typeSymbol = ftpRequest.getCommandArgument(0);
+        FTPTransferType transferType = FTPTransferType.forSymbol(typeSymbol);
+
+        requestContext.setTransferType(transferType);
+
+        FTPResponse response = new FTPResponse(FTPStatus.OK, "Yo.");
+        requestContext.resume(response);
+    }
+
     private void handleCommandPrintWorkingDir(FTPRequestContext requestContext, FTPRequest ftpRequest) {
         File file = requestContext.getCurrentUserWorkingPath();
         FTPResponse response = new FTPResponse(FTPStatus.PATH_CREATED, file == null ? "/" : file.getAbsolutePath());

@@ -32,7 +32,8 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     private ChannelHandlerContext lastChannelHandlerContext;
     private FTPTransferType transferType;
     private File workingPath;
-  
+    private boolean activeMode;
+
     @Inject
     public SansaServerConnection(SansaServer sansaServer, IUserManager userManager) {
         this.sansaServer = sansaServer;
@@ -80,6 +81,16 @@ public class SansaServerConnection extends SimpleChannelInboundHandler<FTPReques
     @Override
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean isInActiveMode() {
+        return activeMode;
+    }
+
+    @Override
+    public void setActiveMode(boolean activeMode) {
+        this.activeMode = activeMode;
     }
 
     @Override

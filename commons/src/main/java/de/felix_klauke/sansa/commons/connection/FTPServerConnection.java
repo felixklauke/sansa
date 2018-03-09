@@ -1,6 +1,7 @@
 package de.felix_klauke.sansa.commons.connection;
 
 import de.felix_klauke.sansa.commons.ftp.FTPTransferType;
+
 import java.io.File;
 
 /**
@@ -13,6 +14,10 @@ public interface FTPServerConnection {
     void setUserName(String userName);
 
     void setPassword(String password);
+
+    boolean isInActiveMode();
+
+    void setActiveMode(boolean activeMode);
 
     boolean isAuthenticated();
 

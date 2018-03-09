@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.io.File;
 
 /**
  * @author Felix 'SasukeKawaii' Klauke
@@ -119,6 +120,21 @@ public class SimpleSansaServer implements SansaServer {
                 handleCommandSetTransferType(requestContext, ftpRequest);
                 break;
             }
+            case SYST: {
+                handleCommandSystemInformation(requestContext, ftpRequest);
+                break;
+            }
+            case PWD: {
+                handleCommandPrintWorkingDir(requestContext, ftpRequest);
+                break;
+            }
+            default: {
+
+            }
+            case UNKNOWN_COMMAND: {
+                handleUnknownCommand(requestContext, ftpRequest);
+                break;
+            }
         }
     }
 
@@ -138,8 +154,36 @@ public class SimpleSansaServer implements SansaServer {
         requestContext.resume(response);
     }
 
+    private void handleCommandPrintWorkingDir(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        File file = requestContext.getCurrentUserWorkingPath();
+        FTPResponse response = new FTPResponse(FTPStatus.PATH_CREATED, file == null ? "/" : file.getAbsolutePath());
+        requestContext.resume(response);
+    }
+
     /**
-     * Handle that the given request wants to set a password for authetication.
+     * Handle that sansa never heard about that command.
+     *
+     * @param requestContext The request context.
+     * @param ftpRequest     The request.
+     */
+    private void handleUnknownCommand(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        FTPResponse response = new FTPResponse(FTPStatus.UNKNOWN_COMMAND, "Sansa never heard about that.");
+        requestContext.resume(response);
+    }
+
+    /**
+     * Handle that the given request was about system information.
+     *
+     * @param requestContext The request context.
+     * @param ftpRequest The request.
+     */
+    private void handleCommandSystemInformation(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        FTPResponse response = new FTPResponse(FTPStatus.SYST_STATUS, "Motherfuckr this is sansa stark from winterfell.");
+        requestContext.resume(response);
+    }
+
+    /**
+     * Handle that the given request wants to set a password for authentication.
      *
      * @param requestContext The request context.
      * @param ftpRequest     The request.

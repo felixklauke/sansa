@@ -171,6 +171,12 @@ public class SimpleSansaServer implements SansaServer {
         requestContext.resume(response);
     }
 
+    /**
+     * Handle that the given request wants to print the working dir.
+     *
+     * @param requestContext The request request.
+     * @param ftpRequest     The request.
+     */
     private void handleCommandPrintWorkingDir(FTPRequestContext requestContext, FTPRequest ftpRequest) {
         File file = requestContext.getCurrentUserWorkingPath();
         FTPResponse response = new FTPResponse(FTPStatus.PATH_CREATED, file == null ? "/" : file.getAbsolutePath());

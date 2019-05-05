@@ -1,6 +1,14 @@
-# Created by .ignore support plugin (hsz.mobi)
-.idea
+################
+### IntelliJ ###
+################
+
 *.iml
-out
-gen
+.idea
 target
+out
+
+##############
+### Gradle ###
+##############
+.gradle/
+build

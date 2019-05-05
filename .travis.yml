@@ -1,8 +1,22 @@
+################
+### Language ###
+################
 language: java
-script: "mvn clean compile"
 
+###########
+### JDK ###
+###########
 jdk:
   - oraclejdk8
-  
+
+#####################
+### Notifications ###
+#####################
 notifications:
   email: false
+
+####################
+### Build script ###
+####################
+script:
+  - ./gradlew build

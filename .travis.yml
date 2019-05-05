@@ -20,3 +20,18 @@ notifications:
 ####################
 script:
   - ./gradlew build
+
+##################
+### Deployment ###
+##################
+deploy:
+  provider: script
+  script: ./gradlw publish
+  on:
+    branch: master
+    tags: true
+
+env:
+  global:
+  - secure: wRHEhqCi5zvcGWBTZGzSD3xg0lTeJctBqZdKhE4T2Ci+4AzgNjpZUGIblPVDhf7BCEfyer7pmO9SZTlbAQgjsNq0xrPjXbEMS0sSwGiZtQOYRRiOxGz0hk9Ptp0mW/p9K6RfiHA16MZkk4dDUIKyp2dRm5+/D7iGS9+88ZUcyJI39Sf4bXiscBehhzY1+ESCXwd+KD5mKDaMh6rkc9tXYtN9GeUbmGqc8nXsuL3nUCmSOecqA+fa94Z2Pi3U5uXIOXgspnpA3d866ScnJgLyPlrvkE8kfuJmbORtV5Nb+z9Xykb+2rd/XtgRh+PbmZZaOde4xqxrCBpYCoitjNoCG5xI0WjzYWySFjnyyjctJBBwTjBBqgwFI7zfVAD6zC0cn/diWSddinO/t7hPCGf0iOHBd2d1PPkyV+ZCuOk0rv2cAEs/niFSTb504tiUPbOsGFqOh1tQJN8VfwIqI+8V36GArDe/HMrz//C0WiSyyz6+unCxH1VcBOyPA6UdBBSA6e3ciPLD+npYTH4Esoc8rMxOc+0CC5hDkYhuHCHa4mow5zhJ/vcIvl47qu7yNlB87DJsnvHbYd+5e586ZM8OL4ge7/Tb/CYCk4L7wIMrjt8EhoJsfS1/PeOybhmGeqSo72np3inlZDzzRU+tIPCXu2Kbg251ed5QikqaHwhRYLA=
+  - secure: qH30avu1BxbusG9H6N+3/7haL3mCYBrKmybV+9OnL/KbFu7NaHJuCj6kf6w+EY+Wyh0zh1/6J0isknrNYi4QM05y1Uaqn56dvGpgtTJIckDF4s52jKu8V6W9FaPCwPTuyITroQyjMsUGLNivAiaFv7ZdnztF/iuUZSoictskPOL7S9uCw5W5Rw7WB2BZPXmDlGKotbZB7LWe8NA//VQRZUItC7/Wb89s+18hfVB9OR89+2peWA87tD67m+yR5PwuZkxhNOzdZrMenVwfZsrS/4sFmt85nvB3A9O6/mHrhOykbsGN/rsTuZPuAIhjxl4boa59xibhlEd0Tkksc/vGr7UXyUdWcGO+yQEmpUQ1yVK2jOKl0mTTidM0dtSgZsnULdtAI0VmVlK3cYu9ryY4SNXHDxLtJ5KTUNV61lMo5RwjLB8i9TGykKqIlUHriaCmVuOkhO7j6/G1uuyOIS8pCGyWCJhobPB0rObHkP6WX1h3J4Xd1tzxstUA8Ejl8oOyw4Dq1vD5Mk7Ty1GamLnfIhkVr25I+k5QvBVJbWgos1wOnsGUQvQPgVq7WJrpV6lJDU3LTP7vAOuGawSZQ0Sq4W7KahIDv/WYhFIvhvjBh7WV5fwKyb0pO7h7sdrkR88vk1CaSF/Le5j/93gxu8zdNsMTY2rnzln++9TaqoLcrWM=

@@ -1,5 +1,6 @@
 package de.felix_klauke.sansa.server;
 
+import com.google.common.base.Preconditions;
 import de.felix_klauke.sansa.commons.ftp.*;
 import de.felix_klauke.sansa.commons.utils.NettyUtils;
 import de.felix_klauke.sansa.server.initializer.SansaServerChannelInitializer;
@@ -103,6 +104,9 @@ public class SimpleSansaServer implements SansaServer {
 
     @Override
     public void handleRequest(FTPRequestContext requestContext, FTPRequest ftpRequest) {
+        Preconditions.checkNotNull(requestContext, "Request Context cannot be null.");
+        Preconditions.checkNotNull(ftpRequest, "Request cannot be null.");
+
         switch (ftpRequest.getCommand()) {
             case AUTH_TLS: {
                 handleCommandAuthTLS(requestContext, ftpRequest);

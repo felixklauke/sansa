@@ -3,13 +3,14 @@
  */
 
 allprojects {
-    group = 'de.felix_lauke'
+    group = 'de.felix_klauke'
     version = '1.0.0'
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
+    apply plugin: 'maven-publish'
 
     repositories {
         mavenLocal()
@@ -23,6 +24,29 @@ subprojects {
 
         maven {
             url = 'http://repo.maven.apache.org/maven2'
+        }
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from(components.java)
+            }
+        }
+
+        repositories {
+
+            maven {
+
+                def releasesRepoUrl = 'https://repository.klauke-enterprises.com/repository/maven-releases/'
+                def snapshotsRepoUrl = 'https://repository.klauke-enterprises.com/repository/maven-snapshots/'
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+                credentials {
+                    username = System.getenv('NEXUS_USERNAME')
+                    password = System.getenv('NEXUS_PASSWORD')
+                }
+            }
         }
     }
 

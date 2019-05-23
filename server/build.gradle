@@ -1,5 +1,5 @@
 dependencies {
     compile project(':sansa-commons')
     compile 'ch.qos.logback:logback-classic:1.1.7'
-    compile 'com.google.inject:guice:4.1.0'
+    compile 'com.google.inject:guice:4.2.2'
 }

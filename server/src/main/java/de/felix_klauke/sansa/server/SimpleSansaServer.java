@@ -1,14 +1,22 @@
 package de.felix_klauke.sansa.server;
 
 import com.google.common.base.Preconditions;
-import de.felix_klauke.sansa.commons.ftp.*;
-import de.felix_klauke.sansa.commons.utils.NettyUtils;
+import de.d3adspace.constrictor.netty.NettyUtils;
+import de.felix_klauke.sansa.commons.ftp.FTPRequest;
+import de.felix_klauke.sansa.commons.ftp.FTPRequestContext;
+import de.felix_klauke.sansa.commons.ftp.FTPResponse;
+import de.felix_klauke.sansa.commons.ftp.FTPStatus;
+import de.felix_klauke.sansa.commons.ftp.FTPTransferType;
 import de.felix_klauke.sansa.server.initializer.SansaServerChannelInitializer;
 import de.felix_klauke.sansa.server.user.IUser;
 import de.felix_klauke.sansa.server.user.IUserManager;
 import de.felix_klauke.sansa.server.user.SimpleUser;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.ServerChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,10 +63,10 @@ public class SimpleSansaServer implements SansaServer {
 
     @Override
     public void start() {
-        this.bossGroup = NettyUtils.createEventLoopGroup(1);
-        this.workerGroup = NettyUtils.createEventLoopGroup(4);
+        this.bossGroup = NettyUtils.createBossGroup(1);
+        this.workerGroup = NettyUtils.createWorkerGroup(4);
 
-        Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerChannelClass();
+        Class<? extends ServerChannel> serverChannelClazz = NettyUtils.getServerSocketChannel();
         ChannelHandler channelInitializer = new SansaServerChannelInitializer(this, userManager);
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();

@@ -5,46 +5,46 @@ package de.felix_klauke.sansa.commons.ftp;
  */
 public enum FTPCommand implements ICommand {
 
-    AUTH_TLS("AUTH TLS"),
-    OPTS("OPTS"),
-    USER("USER"),
-    PASS("PASS"),
-    BYE("BYE"),
-    SYST("SYST"),
-    QUIT("QUIT"),
-    UNKNOWN_COMMAND("UnknownCommand"),
-    PWD("PWD"),
-    TYPE("TYPE"),
-    CHANGE_WORKING_DIR("CWD"),
-    EPSV("EPSV"),
-    EPRT("EPRT"),
-    LIST("LIST"),
-    RETRIEVE("RETR");
+  AUTH_TLS("AUTH TLS"),
+  OPTS("OPTS"),
+  USER("USER"),
+  PASS("PASS"),
+  BYE("BYE"),
+  SYST("SYST"),
+  QUIT("QUIT"),
+  UNKNOWN_COMMAND("UnknownCommand"),
+  PWD("PWD"),
+  TYPE("TYPE"),
+  CHANGE_WORKING_DIR("CWD"),
+  EPSV("EPSV"),
+  EPRT("EPRT"),
+  LIST("LIST"),
+  RETRIEVE("RETR");
 
-    private final String command;
+  private final String command;
 
-    FTPCommand(String command) {
-        this.command = command;
+  FTPCommand(String command) {
+    this.command = command;
+  }
+
+  public static FTPCommand forCommand(String command) {
+    for (FTPCommand ftpCommand : values()) {
+      if (command.startsWith(ftpCommand.command)) {
+        return ftpCommand;
+      }
     }
 
-    public String getCommand() {
-        return command;
-    }
+    return UNKNOWN_COMMAND;
+  }
 
-    @Override
-    public String toString() {
-        return "FTPCommand{" +
-                "command='" + command + '\'' +
-                '}';
-    }
+  public String getCommand() {
+    return command;
+  }
 
-    public static FTPCommand forCommand(String command) {
-        for (FTPCommand ftpCommand : values()) {
-            if (command.startsWith(ftpCommand.command)) {
-                return ftpCommand;
-            }
-        }
-
-        return UNKNOWN_COMMAND;
-    }
+  @Override
+  public String toString() {
+    return "FTPCommand{" +
+        "command='" + command + '\'' +
+        '}';
+  }
 }

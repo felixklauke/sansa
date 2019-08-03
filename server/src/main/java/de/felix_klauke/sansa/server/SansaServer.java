@@ -9,34 +9,34 @@ import de.felix_klauke.sansa.server.user.IUser;
  */
 public interface SansaServer {
 
-    /**
-     * Start the server
-     */
-    void start();
+  /**
+   * Start the server
+   */
+  void start();
 
-    /**
-     * Stop the server.
-     */
-    void stop();
+  /**
+   * Stop the server.
+   */
+  void stop();
 
-    /**
-     * Check if the server is running.
-     *
-     * @return The running state.
-     */
-    boolean isRunning();
+  /**
+   * Check if the server is running.
+   *
+   * @return The running state.
+   */
+  boolean isRunning();
 
-    /**
-     * Register a new user a client can auth against.
-     *
-     * @param user The user.
-     */
-    void registerUser(IUser user);
+  /**
+   * Register a new user a client can auth against.
+   *
+   * @param user The user.
+   */
+  void registerUser(IUser user);
 
-    /**
-     * Register the default user
-     */
-    void registerUsers();
+  /**
+   * Register the default user
+   */
+  void registerUsers();
 
-    void handleRequest(FTPRequestContext requestContext, FTPRequest ftpRequest);
+  void handleRequest(FTPRequestContext requestContext, FTPRequest ftpRequest);
 }

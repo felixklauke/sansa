@@ -1,5 +1,5 @@
 dependencies {
     compile 'de.d3adspace.constrictor:constrictor-netty:2.2'
-    
+
     compile 'ch.qos.logback:logback-classic:1.1.7'
 }

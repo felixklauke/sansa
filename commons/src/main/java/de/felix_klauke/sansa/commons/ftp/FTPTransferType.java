@@ -5,26 +5,26 @@ package de.felix_klauke.sansa.commons.ftp;
  */
 public enum FTPTransferType {
 
-    BINARY("I"),
-    UNKNOWN("ERROR");
+  BINARY("I"),
+  UNKNOWN("ERROR");
 
-    private final String represent;
+  private final String represent;
 
-    FTPTransferType(String represent) {
-        this.represent = represent;
+  FTPTransferType(String represent) {
+    this.represent = represent;
+  }
+
+  public static FTPTransferType forSymbol(String typeSymbol) {
+    for (FTPTransferType ftpTransferType : FTPTransferType.values()) {
+      if (ftpTransferType.getSymbol().equals(typeSymbol)) {
+        return ftpTransferType;
+      }
     }
 
-    public static FTPTransferType forSymbol(String typeSymbol) {
-        for (FTPTransferType ftpTransferType : FTPTransferType.values()) {
-            if (ftpTransferType.getSymbol().equals(typeSymbol)) {
-                return ftpTransferType;
-            }
-        }
+    return UNKNOWN;
+  }
 
-        return UNKNOWN;
-    }
-
-    public String getSymbol() {
-        return represent;
-    }
+  public String getSymbol() {
+    return represent;
+  }
 }

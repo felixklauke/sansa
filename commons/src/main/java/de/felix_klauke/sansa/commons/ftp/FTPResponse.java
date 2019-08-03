@@ -5,19 +5,19 @@ package de.felix_klauke.sansa.commons.ftp;
  */
 public class FTPResponse {
 
-    private final FTPStatus status;
-    private final String message;
+  private final FTPStatus status;
+  private final String message;
 
-    public FTPResponse(FTPStatus status, String message) {
-        this.status = status;
-        this.message = message;
-    }
+  public FTPResponse(FTPStatus status, String message) {
+    this.status = status;
+    this.message = message;
+  }
 
-    public FTPStatus getStatus() {
-        return status;
-    }
+  public FTPStatus getStatus() {
+    return status;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 }

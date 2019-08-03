@@ -15,11 +15,11 @@ import io.netty.channel.socket.SocketChannel;
  */
 public class SansaModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bind(IUserManager.class).to(SimpleUserManager.class).asEagerSingleton();
-        bind(SansaServer.class).to(SimpleSansaServer.class).asEagerSingleton();
-        bind(new TypeLiteral<ChannelInitializer<SocketChannel>>() {
-        }).to(SansaServerChannelInitializer.class).asEagerSingleton();
-    }
+  @Override
+  protected void configure() {
+    bind(IUserManager.class).to(SimpleUserManager.class).asEagerSingleton();
+    bind(SansaServer.class).to(SimpleSansaServer.class).asEagerSingleton();
+    bind(new TypeLiteral<ChannelInitializer<SocketChannel>>() {
+    }).to(SansaServerChannelInitializer.class).asEagerSingleton();
+  }
 }

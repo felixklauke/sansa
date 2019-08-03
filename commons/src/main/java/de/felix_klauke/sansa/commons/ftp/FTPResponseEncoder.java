@@ -10,7 +10,9 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 public class FTPResponseEncoder extends MessageToByteEncoder<FTPResponse> {
 
-    protected void encode(ChannelHandlerContext channelHandlerContext, FTPResponse ftpResponse, ByteBuf byteBuf) throws Exception {
-        ByteBufUtil.writeUtf8(byteBuf, ftpResponse.getStatus().getStatusId() + " " + ftpResponse.getMessage() + "\n");
-    }
+  protected void encode(ChannelHandlerContext channelHandlerContext, FTPResponse ftpResponse,
+      ByteBuf byteBuf) throws Exception {
+    ByteBufUtil.writeUtf8(byteBuf,
+        ftpResponse.getStatus().getStatusId() + " " + ftpResponse.getMessage() + "\n");
+  }
 }

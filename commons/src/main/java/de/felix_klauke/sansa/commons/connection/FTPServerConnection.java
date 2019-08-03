@@ -1,7 +1,6 @@
 package de.felix_klauke.sansa.commons.connection;
 
 import de.felix_klauke.sansa.commons.ftp.FTPTransferType;
-
 import java.io.File;
 
 /**
@@ -9,19 +8,19 @@ import java.io.File;
  */
 public interface FTPServerConnection {
 
-    void setupSSL();
+  void setupSSL();
 
-    void setUserName(String userName);
+  void setUserName(String userName);
 
-    void setPassword(String password);
+  void setPassword(String password);
 
-    boolean isInActiveMode();
+  boolean isInActiveMode();
 
-    void setActiveMode(boolean activeMode);
+  void setActiveMode(boolean activeMode);
 
-    boolean isAuthenticated();
+  boolean isAuthenticated();
 
-    void setTransferType(FTPTransferType transferType);
+  void setTransferType(FTPTransferType transferType);
 
-    File getUserWorkingPath();
+  File getUserWorkingPath();
 }

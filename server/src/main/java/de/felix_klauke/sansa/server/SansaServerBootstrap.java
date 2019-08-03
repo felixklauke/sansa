@@ -10,10 +10,10 @@ import de.felix_klauke.sansa.server.module.SansaModule;
  */
 public class SansaServerBootstrap {
 
-    public static void main(String[] args) {
-        Injector injector = Guice.createInjector(new SansaModule());
-        SansaServer sansaServer = injector.getInstance(SansaServer.class);
-        sansaServer.start();
-        sansaServer.registerUsers();
-    }
+  public static void main(String[] args) {
+    Injector injector = Guice.createInjector(new SansaModule());
+    SansaServer sansaServer = injector.getInstance(SansaServer.class);
+    sansaServer.start();
+    sansaServer.registerUsers();
+  }
 }
